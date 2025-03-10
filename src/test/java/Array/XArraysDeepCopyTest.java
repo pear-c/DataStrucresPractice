@@ -21,7 +21,7 @@ public class XArraysDeepCopyTest {
 
     @Test
     void testDeepCopyObjectArray_NullSource() {
-        assertThrows(NullPointerException.class, () -> XArrays.deepCopy(new Object[][]{(Object[]) null}));
+        assertThrows(NullPointerException.class, () -> XArrays.deepCopy(new Object[][]{null}));
     }
 
     @Test

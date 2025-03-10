@@ -30,8 +30,8 @@ class XArraysCopyPartialTest {
     void testCopyIntArrayToAnotherArray_NullSourceOrDestination() {
         int[] source = { 1, 2, 3, 4, 5 };
         int[] destination = new int[5];
-        assertThrows(NullPointerException.class, () -> XArrays.copy((int[]) null, 0, destination, 0, 0));
-        assertThrows(NullPointerException.class, () -> XArrays.copy(source, 0, (int[]) null, 0, 0));
+        assertThrows(NullPointerException.class, () -> XArrays.copy(null, 0, destination, 0, 0));
+        assertThrows(NullPointerException.class, () -> XArrays.copy(source, 0, null, 0, 0));
     }
 
     @Test
@@ -67,8 +67,8 @@ class XArraysCopyPartialTest {
     void testCopyGenericArrayToAnotherArray_NullSourceOrDestination() {
         String[] source = { "a", "b", "c", "d", "e" };
         String[] destination = new String[5];
-        assertThrows(NullPointerException.class, () -> XArrays.copy((String[]) null, 0, destination, 0, 0));
-        assertThrows(NullPointerException.class, () -> XArrays.copy(source, 0, (String[]) null, 0, 0));
+        assertThrows(NullPointerException.class, () -> XArrays.copy(null, 0, destination, 0, 0));
+        assertThrows(NullPointerException.class, () -> XArrays.copy(source, 0, null, 0, 0));
     }
 
     @Test

@@ -11,9 +11,7 @@ public class XArrays {
         }
 
         int[] result = new int[source.length];
-        for (int i=0; i<source.length; i++) {
-            result[i] = source[i];
-        }
+        System.arraycopy(source, 0, result, 0, source.length);
         return result;
     }
 
@@ -22,11 +20,10 @@ public class XArrays {
             throw new NullPointerException("source is null");
         }
 
+        @SuppressWarnings("unchecked")
         T[] result = (T[]) Array.newInstance(source.getClass().getComponentType(), source.length);
 
-        for(int i=0; i<source.length; i++) {
-            result[i] = source[i];
-        }
+        System.arraycopy(source, 0, result, 0, source.length);
         return result;
     }
 
@@ -43,9 +40,7 @@ public class XArrays {
         }
 
         int[] result = new int[length];
-        for(int i=0; i<length; i++) {
-            result[i] = source[startIndex + i];
-        }
+        System.arraycopy(source, startIndex + 0, result, 0, length);
 
         return result;
     }
@@ -60,10 +55,9 @@ public class XArrays {
             throw new IllegalArgumentException("startIndex + length > source.length");
         }
 
+        @SuppressWarnings("unchecked")
         T[] result = (T[]) Array.newInstance(source.getClass().getComponentType(), length);
-        for(int i=0; i<length; i++) {
-            result[i] = source[startIndex + i];
-        }
+        if (length >= 0) System.arraycopy(source, startIndex + 0, result, 0, length);
         return result;
     }
 
@@ -80,12 +74,8 @@ public class XArrays {
         }
 
         int[] temp = new int[length];
-        for(int i=0; i<length; i++) {
-            temp[i] = source[srcIndex + i];
-        }
-        for(int i=0; i<length; i++) {
-            destination[destIndex + i] = temp[i];
-        }
+        System.arraycopy(source, srcIndex + 0, temp, 0, length);
+        System.arraycopy(temp, 0, destination, destIndex + 0, length);
     }
     public static <T> void copy(T[] source, int srcIndex, T[] destination, int destIndex, int length) {
         if(source == null || destination == null) {
@@ -97,13 +87,11 @@ public class XArrays {
         if(srcIndex + length > source.length || destIndex + length > destination.length) {
             throw new IllegalArgumentException("srcIndex + length > destIndex + length");
         }
+
+        @SuppressWarnings("unchecked")
         T[] temp = (T[]) Array.newInstance(source.getClass().getComponentType(), length);
-        for(int i=0; i<length; i++) {
-            temp[i] = source[srcIndex + i];
-        }
-        for(int i=0; i<length; i++) {
-            destination[destIndex + i] = temp[i];
-        }
+        if (length >= 0) System.arraycopy(source, srcIndex + 0, temp, 0, length);
+        if (length >= 0) System.arraycopy(temp, 0, destination, destIndex + 0, length);
     }
 
     // Lab-04 : 다차원 배열 복제
@@ -118,9 +106,7 @@ public class XArrays {
             if(source[i] == null) {
                 throw new NullPointerException("source[i] is null");
             }
-            for(int j=0; j<source[i].length; j++) {
-                result[i][j] = source[i][j];
-            }
+            System.arraycopy(source[i], 0, result[i], 0, source[i].length);
         }
         return result;
     }
@@ -129,6 +115,7 @@ public class XArrays {
             throw new NullPointerException("source is null");
         }
 
+        @SuppressWarnings("unchecked")
         T[][] result = (T[][]) Array.newInstance(source.getClass().getComponentType(), source.length);
 
         for(int i=0; i<source.length; i++) {
@@ -194,6 +181,15 @@ public class XArrays {
             }
         }
         return true;
+    }
+
+    // Lab-07 : 다차원 배열 동등 비교
+    public static boolean equals(Object array1, Object array2) {
+        if(array1 == null || array2 == null) {
+            throw new IllegalArgumentException("array1 and array2 is null");
+        }
+
+        return false;
     }
 
 
