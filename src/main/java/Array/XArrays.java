@@ -162,6 +162,41 @@ public class XArrays {
         return true;
     }
 
+    // Lab-06 : 2차원 배열 동등 비교
+    public static boolean equals(int[][] array1, int[][] array2) {
+        if(array1 == null || array2 == null) {
+            throw new IllegalArgumentException("array1 and array2 is null");
+        }
+        for(int i=0; i<array1.length; i++) {
+            if(array1[i] == null || array2[i] == null) {
+                throw new IllegalArgumentException("array1 and array2 is null");
+            }
+            for(int j=0; j<array2[i].length; j++) {
+                if(array1[i][j] != array2[i][j]) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    public static <T> boolean equals(T[][] array1, T[][] array2) {
+        if(array1 == null || array2 == null) {
+            throw new IllegalArgumentException("array1 and array2 is null");
+        }
+        for(int i=0; i<array1.length; i++) {
+            if(array1[i] == null || array2[i] == null) {
+                throw new IllegalArgumentException("array1 and array2 is null");
+            }
+            for(int j=0; j<array2[i].length; j++) {
+                if(array1[i][j] != array2[i][j]) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+
 
 
     public static void main(String[] args) {
