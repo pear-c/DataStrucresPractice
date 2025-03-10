@@ -87,8 +87,7 @@ public class XArrayList <T> implements XList<T> {
     public boolean remove(T element) {
         int index = indexOf(element);
         if(index == -1) {
-            System.out.println("제거 하려는 값이 없습니다.");
-            return false;
+            throw new NullPointerException();
         }
         remove(index);
         return true;
@@ -153,7 +152,7 @@ public class XArrayList <T> implements XList<T> {
     @Override
     public XList<T> subList(int fromIndex, int toIndex) {
         XList<T> result = new XArrayList<T>();
-        for(int i=fromIndex; i<=toIndex; i++) {
+        for(int i=fromIndex; i<toIndex; i++) {
             result.add(get(i));
         }
         return result;
@@ -187,6 +186,7 @@ public class XArrayList <T> implements XList<T> {
     @Override
     public void clear() {
         Arrays.fill(array, null);
+        size = 0;
     }
 
     @Override
