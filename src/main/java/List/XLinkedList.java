@@ -55,6 +55,9 @@ public class XLinkedList<T> implements XList<T> {
 
     @Override
     public T remove(int index) {
+        if(size == 0) {
+            throw new IndexOutOfBoundsException();
+        }
         if(index < 0 || index > size) {
             throw new IndexOutOfBoundsException();
         }
@@ -109,6 +112,9 @@ public class XLinkedList<T> implements XList<T> {
 
     @Override
     public T get(int index) {
+        if(size == 0) {
+            throw new IndexOutOfBoundsException();
+        }
         if(index < 0 || index > size) {
             throw new IndexOutOfBoundsException();
         }
@@ -144,7 +150,38 @@ public class XLinkedList<T> implements XList<T> {
 
     @Override
     public void sort(Comparator<? super T> comparator) {
+        head = insertionSort(head, comparator);
+    }
+    private Node<T> insertionSort(Node<T> head, Comparator<? super T> comparator) {
+        if(head == null || head.next == null) {
+            return head;
+        }
 
+        Node<T> sorted = null;
+        Node<T> current = head;
+
+        while(current != null) {
+            Node<T> next = current.next;
+            sorted = sortedInsert(sorted, current, comparator);
+            current = next;
+        }
+        return sorted;
+    }
+    private Node<T> sortedInsert(Node<T> sorted, Node<T> newNode, Comparator<? super T> comparator) {
+        if(sorted == null || comparator.compare((T)newNode.getData(), (T)sorted.getData()) <= 0) {
+            newNode.next = sorted;
+            return newNode;
+        }
+
+        Node<T> current = sorted;
+        while (current.next != null && comparator.compare((T)current.next.getData(), (T)newNode.getData()) < 0) {
+            current = current.next;
+        }
+
+        newNode.next = current.next;
+        current.next = newNode;
+
+        return sorted;
     }
 
 
@@ -191,6 +228,7 @@ public class XLinkedList<T> implements XList<T> {
     @Override
     public void clear() {
         head = null;
+        size = 0;
     }
 
     @Override
