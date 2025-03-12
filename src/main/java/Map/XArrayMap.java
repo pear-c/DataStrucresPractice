@@ -1,20 +1,9 @@
 package Map;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-class Entry<K, V> {
-    K key;
-    V value;
-
-    public Entry(K key, V value) {
-        this.key = key;
-        this.value = value;
-    }
-}
 
 public class XArrayMap<K, V> implements XMap<K, V> {
     private static final int DEFAULT_CAPACITY = 10;
