@@ -22,12 +22,13 @@ public class Main {
         list.add(2);
         list.add(4);
 
-
-
         list.sort(Integer::compareTo);
         System.out.println(list.get(0));
 //
 //        XList<Integer> copiedList = list.copy();
 //        System.out.println(copiedList.size());
+
+
+
     }
 }

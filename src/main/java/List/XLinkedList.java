@@ -4,7 +4,7 @@ import java.util.Comparator;
 import java.util.List;
 
 public class XLinkedList<T> implements XList<T> {
-    private Node head;
+    private Node<T> head;
     private int size;
 
     public XLinkedList() {
@@ -17,11 +17,11 @@ public class XLinkedList<T> implements XList<T> {
         if(element == null) {
             throw new NullPointerException();
         }
-        Node newNode = new Node(element);
+        Node<T> newNode = new Node<>(element);
         if(head == null) {
             head = newNode;
         } else {
-            Node current = head;
+            Node<T> current = head;
             while(current.next != null) {
                 current = current.next;
             }
@@ -38,15 +38,15 @@ public class XLinkedList<T> implements XList<T> {
         if(element == null) {
             throw new NullPointerException();
         }
-        Node newNode = new Node(element);
-        Node current = head;
+        Node<T> newNode = new Node<T>(element);
+        Node<T> current = head;
         if(index == 0) {
             head = newNode;
         } else {
             for(int i = 1; i < index; i++) {
                 current = current.next;
             }
-            Node temp = current.next;
+            Node<T> temp = current.next;
             current.next = newNode;
             newNode.next = temp;
         }
@@ -58,8 +58,8 @@ public class XLinkedList<T> implements XList<T> {
         if(index < 0 || index > size) {
             throw new IndexOutOfBoundsException();
         }
-        Node current = head;
-        Node removed = null;
+        Node<T> current = head;
+        Node<T> removed = null;
         if(index == 0) {
             removed = current;
             head = current.next;
@@ -112,7 +112,7 @@ public class XLinkedList<T> implements XList<T> {
         if(index < 0 || index > size) {
             throw new IndexOutOfBoundsException();
         }
-        Node current = head;
+        Node<T> current = head;
         for(int i = 0; i < index; i++) {
             current = current.next;
         }
@@ -127,8 +127,8 @@ public class XLinkedList<T> implements XList<T> {
         if(element == null) {
             throw new NullPointerException();
         }
-        Node newNode = new Node(element);
-        Node current = head;
+        Node<T> newNode = new Node<>(element);
+        Node<T> current = head;
         if(index == 0) {
             newNode.next = current;
             head = newNode;
@@ -136,7 +136,7 @@ public class XLinkedList<T> implements XList<T> {
             for(int i=1; i<index; i++) {
                 current = current.next;
             }
-            Node temp = current.next.next;
+            Node<T> temp = current.next.next;
             current.next = newNode;
             newNode.next = temp;
         }
@@ -144,21 +144,9 @@ public class XLinkedList<T> implements XList<T> {
 
     @Override
     public void sort(Comparator<? super T> comparator) {
-        if(size <= 1) return;
 
-        Node newNode = null;
-        Node current = head;
-        for(int i=1; i<size; i++) {
-            Object key = get(i);
-            for(int j=i-1; j>=0; j--) {
-                if(comparator.compare((T)key, get(j)) < 0) {
-                    Object temp = remove(j);
-                    set(j, (T)key);
-                    set(i, (T)temp);
-                }
-            }
-        }
     }
+
 
     @Override
     public XList<T> subList(int fromIndex, int toIndex) {
@@ -213,6 +201,5 @@ public class XLinkedList<T> implements XList<T> {
         }
         return result;
     }
-
 
 }
