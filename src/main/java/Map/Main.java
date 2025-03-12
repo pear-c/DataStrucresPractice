@@ -2,7 +2,7 @@ package Map;
 
 public class Main {
     public static void main(String[] args) {
-        XMap<String, Integer> map = new XArrayMap<>();
+        XMap<String, Integer> map = new XHashMap<>();
 
         // 요소 추가
         map.put("Alice", 25);
@@ -25,5 +25,6 @@ public class Main {
         // 전체 삭제 후 확인
         map.clear();
         System.out.println(map.isEmpty()); // 출력: true
+
     }
 }

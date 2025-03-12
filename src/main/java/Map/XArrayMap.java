@@ -1,8 +1,6 @@
 package Map;
 
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class XArrayMap<K, V> implements XMap<K, V> {
@@ -44,8 +42,8 @@ public class XArrayMap<K, V> implements XMap<K, V> {
             throw new IllegalArgumentException();
         }
         for(int i=0; i<size; i++) {
-            if(entry[i].key == key) {
-                return entry[i].value;
+            if(entry[i].getKey() == key) {
+                return entry[i].getValue();
             }
         }
         throw new NullPointerException();
@@ -54,7 +52,7 @@ public class XArrayMap<K, V> implements XMap<K, V> {
     @Override
     public boolean containsKey(K key) {
         for(int i=0; i<size; i++) {
-            if(entry[i].key == key) {
+            if(entry[i].getKey() == key) {
                 return true;
             }
         }
@@ -64,7 +62,7 @@ public class XArrayMap<K, V> implements XMap<K, V> {
     @Override
     public boolean containsValue(V value) {
         for(int i=0; i<size; i++) {
-            if(entry[i].value == value) {
+            if(entry[i].getValue() == value) {
                 return true;
             }
         }
@@ -77,9 +75,9 @@ public class XArrayMap<K, V> implements XMap<K, V> {
         V value = null;
 
         for(int i=0; i<size; i++) {
-            if(entry[i].key == key) {
+            if(entry[i].getKey() == key) {
                 index = i;
-                value = entry[i].value;
+                value = entry[i].getValue();
             }
         }
         if(index < 0 || value == null) {
@@ -114,7 +112,7 @@ public class XArrayMap<K, V> implements XMap<K, V> {
     public Set<K> keySet() {
         return Arrays.stream(entry)
                 .filter(Objects::nonNull)
-                .map(e -> e.key)
+                .map(e -> e.getKey())
                 .collect(Collectors.toUnmodifiableSet());
     }
 
@@ -122,7 +120,7 @@ public class XArrayMap<K, V> implements XMap<K, V> {
     public Set<V> values() {
         return Arrays.stream(entry)
                 .filter(Objects::nonNull)
-                .map(e -> e.value)
+                .map(e -> e.getValue())
                 .collect(Collectors.toUnmodifiableSet());
     }
 }
