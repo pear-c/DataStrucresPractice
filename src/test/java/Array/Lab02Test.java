@@ -3,9 +3,9 @@ package Array;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
-class XArraysCopyCreatePartialTest {
+class Lab02Test {
+    private Lab02 XArrays;
 
-    // copy(int[] source, int startIndex, int length) 테스트
     @Test
     void testCopyIntArrayWithStartAndLength() {
         int[] source = { 1, 2, 3, 4, 5 };
@@ -44,6 +44,5 @@ class XArraysCopyCreatePartialTest {
         assertThrows(IndexOutOfBoundsException.class, () -> XArrays.copy(source, -1, 3));
         assertThrows(IllegalArgumentException.class, () -> XArrays.copy(source, 2, 10));
     }
-
 
 }
