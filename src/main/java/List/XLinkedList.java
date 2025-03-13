@@ -12,11 +12,18 @@ public class XLinkedList<T> implements XList<T> {
         this.size = 0;
     }
 
+    private Node<T> getNode(int index) {
+        Node<T> current = head;
+        for(int i=0; i<index; i++) {
+            current = current.next;
+        }
+        return current;
+    }
+
     @Override
     public void add(T element) {
-        if(element == null) {
-            throw new NullPointerException();
-        }
+        requireNotNull(element);
+
         Node<T> newNode = new Node<>(element);
         if(head == null) {
             head = newNode;
@@ -32,12 +39,9 @@ public class XLinkedList<T> implements XList<T> {
 
     @Override
     public void add(int index, T element) {
-        if(index < 0 || index > size) {
-            throw new IndexOutOfBoundsException();
-        }
-        if(element == null) {
-            throw new NullPointerException();
-        }
+        requireNotNull(element);
+        checkIndexOfBounds(index);
+
         Node<T> newNode = new Node<T>(element);
         Node<T> current = head;
         if(index == 0) {
@@ -58,9 +62,8 @@ public class XLinkedList<T> implements XList<T> {
         if(size == 0) {
             throw new IndexOutOfBoundsException();
         }
-        if(index < 0 || index > size) {
-            throw new IndexOutOfBoundsException();
-        }
+        checkIndexOfBounds(index);
+
         Node<T> current = head;
         Node<T> removed = null;
         if(index == 0) {
@@ -79,9 +82,8 @@ public class XLinkedList<T> implements XList<T> {
 
     @Override
     public boolean remove(T element) {
-        if(element == null) {
-            throw new NullPointerException();
-        }
+        requireNotNull(element);
+
         int index = indexOf(element);
         if(index == -1) {
             return false;
@@ -115,9 +117,8 @@ public class XLinkedList<T> implements XList<T> {
         if(size == 0) {
             throw new IndexOutOfBoundsException();
         }
-        if(index < 0 || index > size) {
-            throw new IndexOutOfBoundsException();
-        }
+        checkIndexOfBounds(index);
+
         Node<T> current = head;
         for(int i = 0; i < index; i++) {
             current = current.next;
@@ -127,12 +128,9 @@ public class XLinkedList<T> implements XList<T> {
 
     @Override
     public void set(int index, T element) {
-        if(index < 0 || index > size) {
-            throw new IndexOutOfBoundsException();
-        }
-        if(element == null) {
-            throw new NullPointerException();
-        }
+        checkIndexOfBounds(index);
+        requireNotNull(element);
+
         Node<T> newNode = new Node<>(element);
         Node<T> current = head;
         if(index == 0) {
@@ -240,4 +238,14 @@ public class XLinkedList<T> implements XList<T> {
         return result;
     }
 
+    private void checkIndexOfBounds(int index) {
+        if(index < 0 || index > size) {
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
+        }
+    }
+    private void requireNotNull(T element) {
+        if(element == null) {
+            throw new NullPointerException("Element cannot be null");
+        }
+    }
 }

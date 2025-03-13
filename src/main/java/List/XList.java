@@ -2,7 +2,6 @@ package List;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.function.Consumer;
 
 /**
  * XList 인터페이스는 리스트의 기본 동작을 정의합니다.

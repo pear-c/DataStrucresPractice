@@ -1,6 +1,5 @@
 package List;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -8,29 +7,22 @@ import java.util.List;
 
 public class XArrayList <T> implements XList<T> {
     private static final int DEFAULT_CAPACITY = 10;
-    private static final Object[] EMPTY_ARRAY = {};
 
     private int size;
-    Object[] array;
+    private Object[] array;
 
     public XArrayList() {
-        this.array = EMPTY_ARRAY;
+        this.array = new Object[DEFAULT_CAPACITY];
         this.size = 0;
     }
 
     private void resize() {
         int oldCapacity = array.length;
 
-        if(Arrays.equals(array, EMPTY_ARRAY)) {
-            array = new Object[DEFAULT_CAPACITY];
-            return;
-        }
-
         if(size == oldCapacity) {
             int newCapacity = oldCapacity * 2;
 
             array = Arrays.copyOf(array, newCapacity);
-            return;
         }
     }
 

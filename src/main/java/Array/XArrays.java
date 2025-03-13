@@ -12,6 +12,7 @@ public class XArrays {
 
         int[] result = new int[source.length];
         System.arraycopy(source, 0, result, 0, source.length);
+
         return result;
     }
 
@@ -20,8 +21,9 @@ public class XArrays {
             throw new NullPointerException("source is null");
         }
 
+        Class<?> componentType = source.getClass().getComponentType();
         @SuppressWarnings("unchecked")
-        T[] result = (T[]) Array.newInstance(source.getClass().getComponentType(), source.length);
+        T[] result = (T[]) Array.newInstance(componentType, source.length);
 
         System.arraycopy(source, 0, result, 0, source.length);
         return result;
@@ -55,8 +57,9 @@ public class XArrays {
             throw new IllegalArgumentException("startIndex + length > source.length");
         }
 
+        Class<?> componentType = source.getClass().getComponentType();
         @SuppressWarnings("unchecked")
-        T[] result = (T[]) Array.newInstance(source.getClass().getComponentType(), length);
+        T[] result = (T[]) Array.newInstance(componentType, length);
         if (length >= 0) System.arraycopy(source, startIndex + 0, result, 0, length);
         return result;
     }
@@ -74,8 +77,8 @@ public class XArrays {
         }
 
         int[] temp = new int[length];
-        System.arraycopy(source, srcIndex + 0, temp, 0, length);
-        System.arraycopy(temp, 0, destination, destIndex + 0, length);
+        System.arraycopy(source, srcIndex, temp, 0, length);
+        System.arraycopy(temp, 0, destination, destIndex, length);
     }
     public static <T> void copy(T[] source, int srcIndex, T[] destination, int destIndex, int length) {
         if(source == null || destination == null) {
@@ -88,10 +91,11 @@ public class XArrays {
             throw new IllegalArgumentException("srcIndex + length > destIndex + length");
         }
 
+        Class<?> componentType = source.getClass().getComponentType();
         @SuppressWarnings("unchecked")
-        T[] temp = (T[]) Array.newInstance(source.getClass().getComponentType(), length);
-        if (length >= 0) System.arraycopy(source, srcIndex + 0, temp, 0, length);
-        if (length >= 0) System.arraycopy(temp, 0, destination, destIndex + 0, length);
+        T[] temp = (T[]) Array.newInstance(componentType, length);
+        if (length >= 0) System.arraycopy(source, srcIndex , temp, 0, length);
+        if (length >= 0) System.arraycopy(temp, 0, destination, destIndex, length);
     }
 
     // Lab-04 : 다차원 배열 복제
@@ -99,14 +103,16 @@ public class XArrays {
         if(source == null) {
             throw new NullPointerException("source is null");
         }
-        int[][] result = new int[source.length][];
-        for(int i=0; i<source.length; i++) {
-            result[i] = new int[source[i].length];
 
-            if(source[i] == null) {
-                throw new NullPointerException("source[i] is null");
+        int[][] result = new int[source.length][];
+
+        for(int i=0; i<source.length; i++) {
+            if(source[i] != null) {
+                result[i] = new int[source[i].length];
+                for(int j=0; j<source[i].length; j++) {
+                    result[i][j] = source[i][j];
+                }
             }
-            System.arraycopy(source[i], 0, result[i], 0, source[i].length);
         }
         return result;
     }
@@ -114,12 +120,20 @@ public class XArrays {
         if(source == null) {
             throw new NullPointerException("source is null");
         }
-
+        Class<?> componentType = source.getClass().getComponentType();
         @SuppressWarnings("unchecked")
-        T[][] result = (T[][]) Array.newInstance(source.getClass().getComponentType(), source.length);
+        T[][] result = (T[][]) Array.newInstance(componentType, source.length);
 
         for(int i=0; i<source.length; i++) {
-
+            if (source[i] != null) {
+                Class<?> innerComponentType = source[i].getClass().getComponentType();
+                @SuppressWarnings("unchecked")
+                T[] innerArray = (T[]) Array.newInstance(innerComponentType, source[i].length);
+                for(int j=0; j<source[i].length; j++) {
+                    innerArray[j] = source[i][j];
+                }
+                result[i] = innerArray;
+            }
         }
         return result;
     }
@@ -188,6 +202,17 @@ public class XArrays {
         if(array1 == null || array2 == null) {
             throw new IllegalArgumentException("array1 and array2 is null");
         }
+
+        if(array1.getClass().isArray()) {
+            if(array1.getClass().getComponentType().isPrimitive()) {
+                for(int i=0; i<Array.getLength(array1); i++) {
+                    if(!Array.get(array1, i).equals(Array.get(array2, i))) {
+
+                    }
+                }
+            }
+        }
+
 
         return false;
     }
