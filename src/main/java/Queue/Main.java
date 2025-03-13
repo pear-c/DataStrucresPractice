@@ -4,20 +4,12 @@ import List.XLinkedList;
 
 public class Main {
     public static void main(String[] args) {
-        XQueue<Integer> queue = new XListQueue<>(new XLinkedList<Integer>());
+        XQueue<String> pq = new XPriorityQueue<>((a, b) -> b.length() - a.length());
 
-        queue.enqueue(10);
-        queue.enqueue(20);
-        queue.enqueue(30);
+        pq.enqueue("apple");
+        pq.enqueue("banana");
+        pq.enqueue("kiwi");
 
-        System.out.println(queue.dequeue());  // 출력: 10
-        queue.enqueue(40);
-
-        System.out.println(queue.peek());  // 출력: 20
-        System.out.println(queue.size());  // 출력: 3
-
-        XQueue<Integer> newQueue = queue.copy();
-        System.out.println(newQueue.peek());
-        System.out.println(newQueue.size());  // 출력: 3
+        System.out.println(pq.dequeue());  // 출력: "banana" (가장 긴 문자열)
     }
 }
