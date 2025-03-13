@@ -1,8 +1,10 @@
 package Queue;
 
+import List.XLinkedList;
+
 public class Main {
     public static void main(String[] args) {
-        XQueue<Integer> queue = new XArrayQueue<>(3);  // 초기 크기 3
+        XQueue<Integer> queue = new XListQueue<>(new XLinkedList<Integer>());
 
         queue.enqueue(10);
         queue.enqueue(20);
@@ -14,11 +16,8 @@ public class Main {
         System.out.println(queue.peek());  // 출력: 20
         System.out.println(queue.size());  // 출력: 3
 
-        queue.enqueue(50);  // 크기 자동 확장 발생 (크기: 6)
-        System.out.println(queue.size());  // 출력: 4
-
-        XQueue<Integer> copyQueue = queue.copy();
-        System.out.println(copyQueue.peek());
-        System.out.println(copyQueue.size());
+        XQueue<Integer> newQueue = queue.copy();
+        System.out.println(newQueue.peek());
+        System.out.println(newQueue.size());  // 출력: 3
     }
 }
