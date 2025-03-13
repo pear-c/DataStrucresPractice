@@ -1,6 +1,5 @@
 package Queue;
 
-import List.XArrayList;
 import List.XLinkedList;
 import List.XList;
 
