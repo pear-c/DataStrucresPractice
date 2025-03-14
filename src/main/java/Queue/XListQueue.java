@@ -19,11 +19,17 @@ public class XListQueue<T> implements XQueue<T> {
 
     @Override
     public T dequeue() {
+        if(list.isEmpty()) {
+            throw new IllegalArgumentException();
+        }
         return list.remove(0);
     }
 
     @Override
     public T peek() {
+        if(list.isEmpty()) {
+            throw new IllegalArgumentException();
+        }
         return list.get(0);
     }
 

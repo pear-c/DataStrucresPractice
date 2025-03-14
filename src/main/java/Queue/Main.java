@@ -4,12 +4,16 @@ import List.XLinkedList;
 
 public class Main {
     public static void main(String[] args) {
-        XQueue<String> pq = new XPriorityQueue<>((a, b) -> b.length() - a.length());
+        XQueue<Integer> queue = new XListQueue<>(new XLinkedList<Integer>());  // 내부적으로 연결 리스트 사용
 
-        pq.enqueue("apple");
-        pq.enqueue("banana");
-        pq.enqueue("kiwi");
+        queue.enqueue(10);
+        queue.enqueue(20);
+        queue.enqueue(30);
 
-        System.out.println(pq.dequeue());  // 출력: "banana" (가장 긴 문자열)
+        System.out.println(queue.dequeue());  // 출력: 10
+        queue.enqueue(40);
+
+        System.out.println(queue.peek());  // 출력: 20
+        System.out.println(queue.size());  // 출력: 3
     }
 }
