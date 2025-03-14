@@ -27,7 +27,7 @@ public class XLinkedStack<T> implements XStack<T> {
     @Override
     public T pop() {
         if(isEmpty()) {
-            throw new EmptyStackException();
+            throw new NoSuchElementException();
         }
         T element = top.data;
         top = top.next;
@@ -38,7 +38,7 @@ public class XLinkedStack<T> implements XStack<T> {
     @Override
     public T peek() {
         if(isEmpty()) {
-            throw new EmptyStackException();
+            throw new NoSuchElementException();
         }
         return top.data;
     }
