@@ -58,7 +58,7 @@ public class XArrayList <T> implements XList<T> {
 
     @Override
     public T remove(int index) {
-        if(index > size || index < 0 || size == 0) {
+        if(index >= size || index < 0) {
             throw new IndexOutOfBoundsException();
         }
         T result = array[index];
@@ -96,7 +96,7 @@ public class XArrayList <T> implements XList<T> {
 
     @Override
     public T get(int index) {
-        if(index > size || index < 0 || size == 0) {
+        if(index >= size || index < 0) {
             throw new IndexOutOfBoundsException();
         }
         return array[index];
@@ -104,7 +104,7 @@ public class XArrayList <T> implements XList<T> {
 
     @Override
     public void set(int index, T element) {
-        if(index > size || index < 0) {
+        if(index >= size || index < 0) {
             throw new IndexOutOfBoundsException();
         }
         if(element == null) {
