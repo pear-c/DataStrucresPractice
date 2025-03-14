@@ -1,9 +1,11 @@
 package Tree;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class XBinarySearchTree<T extends Comparable<T>> implements XBinaryTree<T> {
-    private class Node<T> {
+    class Node<T> {
         T value;
         Node<T> left;
         Node<T> right;
@@ -48,20 +50,33 @@ public class XBinarySearchTree<T extends Comparable<T>> implements XBinaryTree<T
     public boolean search(T value) {
         Objects.requireNonNull(value, "Value cannot be null");
 
-        return searchTree(root, value) != null;
+        return searchTree(root, value);
     }
-    private Node<T> searchTree(Node<T> node, T value) {
-        if(node == null || node.value == value) {
-            return node;
+    private boolean searchTree(Node<T> node, T value) {
+        if(node == null) {
+            return false;
         }
 
-        if(value.compareTo(node.value) < 0) {
+        if(value.compareTo(node.value) == 0) {
+            return true;
+        } else if(value.compareTo(node.value) < 0) {
             return searchTree(node.left, value);
-        }
-        else {
+        } else {
             return searchTree(node.right, value);
         }
     }
+//    private Node<T> searchTree(Node<T> node, T value) {
+//        if(node == null || node.value == value) {
+//            return node;
+//        }
+//
+//        if(value.compareTo(node.value) < 0) {
+//            return searchTree(node.left, value);
+//        }
+//        else {
+//            return searchTree(node.right, value);
+//        }
+//    }
 
     @Override
     public void delete(T value) {
@@ -77,30 +92,23 @@ public class XBinarySearchTree<T extends Comparable<T>> implements XBinaryTree<T
 
         if(value.compareTo(node.value) < 0) {
             node.left = deleteTree(node.left, value);
-        }
-        else if(value.compareTo(node.value) > 0) {
+        } else if(value.compareTo(node.value) > 0) {
             node.right = deleteTree(node.right, value);
-        }
-        else {
-            // Case 1: No child
-            if(node.left == null && node.right == null) {
-                return null;
-            }
-            // Case 2: One Child
+        } else {
+            // 삭제될 노드를 찾은 경우
             if(node.left == null) {
                 return node.right;
-            }
-            if(node.right == null) {
+            } else if(node.right == null) {
                 return node.left;
             }
-            // Case 3: Two children -> find inorder successor
-            Node<T> result = findMin(node.right);
-            node.value = result.value;
-            node.right = deleteTree(node.right, result.value);
+
+            // 두 자식이 모두 있는 경우
+            Node<T> minValue = findMin(node.right);
+            node.value = minValue.value;
+            node.right = deleteTree(node.right, minValue.value);
         }
         return node;
     }
-
     private Node<T> findMin(Node<T> node) {
         while(node.left != null) {
             node = node.left;
@@ -129,14 +137,16 @@ public class XBinarySearchTree<T extends Comparable<T>> implements XBinaryTree<T
     }
 
     @Override
-    public void inorderTraversal() {
-        inorder(root);
+    public List<T> inorderTraversal() {
+        List<T> result = new ArrayList<>();
+        inorder(root, result);
+        return result;
     }
-    private void inorder(Node<T> node) {
+    private void inorder(Node<T> node, List<T> result) {
         if(node != null) {
-            inorder(node.left);
-            System.out.print(node.value + " ");
-            inorder(node.right);
+            inorder(node.left, result);
+            result.add(node.value);
+            inorder(node.right, result);
         }
     }
 }

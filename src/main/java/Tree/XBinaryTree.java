@@ -49,5 +49,5 @@ public interface XBinaryTree<T extends Comparable<T>> {
      *
      * @return 중위 순회 결과로 얻은 값 목록
      */
-    void inorderTraversal();
+    List<T> inorderTraversal();
 }

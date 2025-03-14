@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.*;
+import java.util.Arrays;
 
 /**
  * XBinarySearchTree 클래스의 테스트 클래스입니다.
@@ -100,16 +100,16 @@ public class XBinarySearchTreeTest {
         assertEquals(1, bst.height());
     }
 
-//    /**
-//     * 중위 순회 결과를 테스트합니다.
-//     */
-//    @Test
-//    void testInorderTraversal() {
-//        bst.insert(5);
-//        bst.insert(3);
-//        bst.insert(7);
-//
-//        // 중위 순회 결과가 "3 5 7" 순서로 출력되어야 함
-//        assertEquals("[3, 5, 7]", Arrays.toString(bst.inorderTraversal().toArray()));
-//    }
+    /**
+     * 중위 순회 결과를 테스트합니다.
+     */
+    @Test
+    void testInorderTraversal() {
+        bst.insert(5);
+        bst.insert(3);
+        bst.insert(7);
+
+        // 중위 순회 결과가 "3 5 7" 순서로 출력되어야 함
+        assertEquals("[3, 5, 7]", Arrays.toString(bst.inorderTraversal().toArray()));
+    }
 }
