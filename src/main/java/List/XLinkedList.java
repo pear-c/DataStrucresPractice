@@ -4,6 +4,16 @@ import java.util.Comparator;
 import java.util.List;
 
 public class XLinkedList<T> implements XList<T> {
+    class Node<T> {
+        T data;
+        Node<T> next;
+
+        Node(T data) {
+            this.data = data;
+            this.next = null;
+        }
+    }
+
     private Node<T> head;
     private int size;
 
@@ -13,6 +23,8 @@ public class XLinkedList<T> implements XList<T> {
     }
 
     private Node<T> getNode(int index) {
+        checkIndexOfBounds(index);
+
         Node<T> current = head;
         for(int i=0; i<index; i++) {
             current = current.next;
@@ -24,15 +36,14 @@ public class XLinkedList<T> implements XList<T> {
     public void add(T element) {
         requireNotNull(element);
 
-        Node<T> newNode = new Node<>(element);
         if(head == null) {
-            head = newNode;
+            head = new Node<>(element);
         } else {
             Node<T> current = head;
             while(current.next != null) {
                 current = current.next;
             }
-            current.next = newNode;
+            current.next = new Node<>(element);
         }
         size++;
     }
@@ -42,42 +53,34 @@ public class XLinkedList<T> implements XList<T> {
         requireNotNull(element);
         checkIndexOfBounds(index);
 
-        Node<T> newNode = new Node<T>(element);
-        Node<T> current = head;
         if(index == 0) {
+            Node<T> newNode = new Node<>(element);
+            newNode.next = head;
             head = newNode;
         } else {
-            for(int i = 1; i < index; i++) {
-                current = current.next;
-            }
-            Node<T> temp = current.next;
-            current.next = newNode;
-            newNode.next = temp;
+            Node<T> prev = getNode(index - 1);
+            Node<T> newNode = new Node<>(element);
+            newNode.next = prev.next;
+            prev.next = newNode;
         }
         size++;
     }
 
     @Override
     public T remove(int index) {
-        if(size == 0) {
-            throw new IndexOutOfBoundsException();
-        }
         checkIndexOfBounds(index);
 
-        Node<T> current = head;
-        Node<T> removed = null;
+        T removedData;
         if(index == 0) {
-            removed = current;
-            head = current.next;
+            removedData = head.data;
+            head = head.next;
         } else {
-            for(int i = 1; i < index; i++) {
-                current = current.next;
-            }
-            removed = current.next;
-            current.next = current.next.next;
+            Node<T> prev = getNode(index - 1);
+            removedData = prev.next.data;
+            prev.next = prev.next.next;
         }
         size--;
-        return (T) removed.getData();
+        return removedData;
     }
 
     @Override
@@ -114,16 +117,7 @@ public class XLinkedList<T> implements XList<T> {
 
     @Override
     public T get(int index) {
-        if(size == 0) {
-            throw new IndexOutOfBoundsException();
-        }
-        checkIndexOfBounds(index);
-
-        Node<T> current = head;
-        for(int i = 0; i < index; i++) {
-            current = current.next;
-        }
-        return (T) current.getData();
+        return getNode(index).data;
     }
 
     @Override
@@ -131,29 +125,12 @@ public class XLinkedList<T> implements XList<T> {
         checkIndexOfBounds(index);
         requireNotNull(element);
 
-        Node<T> newNode = new Node<>(element);
-        Node<T> current = head;
-        if(index == 0) {
-            newNode.next = current;
-            head = newNode;
-        } else {
-            for(int i=1; i<index; i++) {
-                current = current.next;
-            }
-            Node<T> temp = current.next.next;
-            current.next = newNode;
-            newNode.next = temp;
-        }
+        getNode(index).data = element;
     }
 
     @Override
     public void sort(Comparator<? super T> comparator) {
-        head = insertionSort(head, comparator);
-    }
-    private Node<T> insertionSort(Node<T> head, Comparator<? super T> comparator) {
-        if(head == null || head.next == null) {
-            return head;
-        }
+        if(size < 2) return;
 
         Node<T> sorted = null;
         Node<T> current = head;
@@ -163,16 +140,17 @@ public class XLinkedList<T> implements XList<T> {
             sorted = sortedInsert(sorted, current, comparator);
             current = next;
         }
-        return sorted;
+
+        head = sorted;
     }
     private Node<T> sortedInsert(Node<T> sorted, Node<T> newNode, Comparator<? super T> comparator) {
-        if(sorted == null || comparator.compare((T)newNode.getData(), (T)sorted.getData()) <= 0) {
+        if(sorted == null || comparator.compare(newNode.data, sorted.data) <= 0) {
             newNode.next = sorted;
             return newNode;
         }
 
         Node<T> current = sorted;
-        while (current.next != null && comparator.compare((T)current.next.getData(), (T)newNode.getData()) < 0) {
+        while (current.next != null && comparator.compare(newNode.data, current.next.data) > 0) {
             current = current.next;
         }
 
@@ -185,12 +163,11 @@ public class XLinkedList<T> implements XList<T> {
 
     @Override
     public XList<T> subList(int fromIndex, int toIndex) {
-        XList<T> result = new XLinkedList<T>();
-
-        if(fromIndex < 0 || toIndex > size) {
+        if(fromIndex < 0 || toIndex > size || fromIndex > toIndex) {
             throw new IndexOutOfBoundsException();
         }
 
+        XList<T> result = new XLinkedList<T>();
         for(int i = fromIndex; i < toIndex; i++) {
             result.add(get(i));
         }
@@ -210,7 +187,11 @@ public class XLinkedList<T> implements XList<T> {
 
     @Override
     public void forEach() {
-
+        Node<T> current = head;
+        while (current != null) {
+            System.out.println(current.data);
+            current = current.next;
+        }
     }
 
     @Override
@@ -239,7 +220,7 @@ public class XLinkedList<T> implements XList<T> {
     }
 
     private void checkIndexOfBounds(int index) {
-        if(index < 0 || index > size) {
+        if(index < 0 || index >= size) {
             throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
         }
     }
