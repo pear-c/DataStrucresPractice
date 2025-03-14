@@ -2,6 +2,7 @@ package Queue;
 
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class XArrayQueue<T> implements XQueue<T> {
     private T[] queue;
@@ -21,9 +22,9 @@ public class XArrayQueue<T> implements XQueue<T> {
 
     private void resize() {
         int newCapacity = capacity * 2;
+
         @SuppressWarnings("unchecked")
         T[] newQueue = (T[]) new Object[newCapacity];
-
         for(int i=0; i<size; i++) {
             newQueue[i] = queue[(front + i) % capacity];
         }
@@ -46,6 +47,10 @@ public class XArrayQueue<T> implements XQueue<T> {
 
     @Override
     public T dequeue() {
+        if(size == 0) {
+            throw new IllegalArgumentException();
+        }
+
         T element = queue[front];
         queue[front] = null;
         front = (front + 1) % capacity;
@@ -55,7 +60,7 @@ public class XArrayQueue<T> implements XQueue<T> {
 
     @Override
     public T peek() {
-        if(queue[front] == null) {
+        if(queue[front] == null || size == 0) {
             throw new IllegalArgumentException();
         }
         return queue[front];
@@ -74,6 +79,7 @@ public class XArrayQueue<T> implements XQueue<T> {
     @Override
     public void clear() {
         Arrays.fill(queue, null);
+        size = 0;
     }
 
     @Override
@@ -87,6 +93,26 @@ public class XArrayQueue<T> implements XQueue<T> {
 
     @Override
     public Iterator<T> iterator() {
-        return null;
+        return new Iterator<>() {
+            private int index = front;
+            private int count = 0;
+
+            @Override
+            public boolean hasNext() {
+                return count < size;
+            }
+
+            @Override
+            public T next() {
+                if(!hasNext()) {
+                    throw new NoSuchElementException();
+                }
+
+                T element = queue[index];
+                index = (index + 1) % queue.length;
+                count++;
+                return element;
+            }
+        };
     }
 }
