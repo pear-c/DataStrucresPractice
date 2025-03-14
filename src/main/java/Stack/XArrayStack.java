@@ -11,14 +11,12 @@ public class XArrayStack<T> implements XStack<T> {
     private T[] array;
     private int capacity;
     private int size;
-    private int top;
 
     @SuppressWarnings("unchecked")
     public XArrayStack() {
         array = (T[]) new Object[DEFAULT_CAPACITY];
         this.capacity = 10;
         this.size = 0;
-        this.top = 0;
     }
 
     private void resize() {
@@ -34,27 +32,24 @@ public class XArrayStack<T> implements XStack<T> {
             resize();
         }
         array[size++] = element;
-        top = size - 1;
     }
 
     @Override
     public T pop() {
-        if(!isEmpty()) {
-            T element = array[top];
-            array[top] = null;
-            top--;
-            size--;
-            return element;
+        if(isEmpty()) {
+            throw new NoSuchElementException();
         }
-        throw new NoSuchElementException();
+        T element = peek();
+        array[--size] = null;
+        return element;
     }
 
     @Override
     public T peek() {
-        if(array[top] == null) {
+        if(isEmpty()) {
             throw new NoSuchElementException();
         }
-        return array[top];
+        return array[size - 1];
     }
 
     @Override
@@ -71,7 +66,6 @@ public class XArrayStack<T> implements XStack<T> {
     public void clear() {
         Arrays.fill(array, null);
         size = 0;
-        top = 0;
     }
 
     @Override
