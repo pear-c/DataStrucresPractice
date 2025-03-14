@@ -1,15 +1,16 @@
 package Stack;
 
+import java.util.EmptyStackException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
 public class XLinkedStack<T> implements XStack<T> {
-    Node<T> head;
+    private Node<T> top;
     private int size;
 
     public XLinkedStack() {
-        this.head = null;
+        this.top = null;
         size = 0;
     }
 
@@ -17,62 +18,34 @@ public class XLinkedStack<T> implements XStack<T> {
     public void push(T element) {
         Objects.requireNonNull(element, "Value cannot be null");
 
-        Node<T> current = head;
         Node<T> newNode = new Node<>(element);
-
-        if(current == null) {
-            head = newNode;
-        }
-        else {
-            while(current.next != null) {
-                current = current.next;
-            }
-            current.next = newNode;
-        }
+        newNode.next = top;
+        top = newNode;
         size++;
     }
 
     @Override
     public T pop() {
-        Node<T> current = head;
-        Node<T> prev = null;
-
-        if(size == 0) {
-            throw new NoSuchElementException();
+        if(isEmpty()) {
+            throw new EmptyStackException();
         }
-        if(size == 1) {
-            Node<T> result = current;
-            head = null;
-            size--;
-            return result.element;
-        }
-
-
-        while(current.next != null) {
-            prev = current;
-            current = current.next;
-        }
-        Node<T> result = current;
-        prev.next = null;
+        T element = top.data;
+        top = top.next;
         size--;
-        return result.element;
+        return element;
     }
 
     @Override
     public T peek() {
-        Node<T> current = head;
-        if(current == null) {
-            throw new NoSuchElementException();
+        if(isEmpty()) {
+            throw new EmptyStackException();
         }
-        while(current.next != null) {
-            current = current.next;
-        }
-        return current.element;
+        return top.data;
     }
 
     @Override
     public boolean isEmpty() {
-        return head == null;
+        return top == null;
     }
 
     @Override
@@ -82,7 +55,7 @@ public class XLinkedStack<T> implements XStack<T> {
 
     @Override
     public void clear() {
-        head = null;
+        top = null;
         size = 0;
     }
 
@@ -91,12 +64,12 @@ public class XLinkedStack<T> implements XStack<T> {
         return null;
     }
 
-    private class Node<T> {
-        T element;
+    class Node<T> {
+        T data;
         Node<T> next;
 
         public Node(T element) {
-            this.element = element;
+            this.data = element;
             next = null;
         }
     }
