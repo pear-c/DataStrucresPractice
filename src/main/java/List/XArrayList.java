@@ -8,22 +8,16 @@ import java.util.List;
 public class XArrayList <T> implements XList<T> {
     private static final int DEFAULT_CAPACITY = 10;
 
+    private T[] array;
     private int size;
-    private Object[] array;
 
     public XArrayList() {
-        this.array = new Object[DEFAULT_CAPACITY];
+        this.array = (T[]) new Object[DEFAULT_CAPACITY];
         this.size = 0;
     }
 
     private void resize() {
-        int oldCapacity = array.length;
-
-        if(size == oldCapacity) {
-            int newCapacity = oldCapacity * 2;
-
-            array = Arrays.copyOf(array, newCapacity);
-        }
+        array = Arrays.copyOf(array, array.length * 2);
     }
 
     @Override
@@ -45,6 +39,7 @@ public class XArrayList <T> implements XList<T> {
         if(element == null) {
             throw new NullPointerException();
         }
+
         if(index == size) {
             add(element);
         }
@@ -63,10 +58,10 @@ public class XArrayList <T> implements XList<T> {
 
     @Override
     public T remove(int index) {
-        if(index > size || index < 0) {
+        if(index > size || index < 0 || size == 0) {
             throw new IndexOutOfBoundsException();
         }
-        T result = (T) array[index];
+        T result = array[index];
         for(int i=index; i<size; i++) {
             array[i] = array[i+1];
         }
@@ -86,8 +81,7 @@ public class XArrayList <T> implements XList<T> {
 
     @Override
     public boolean contains(T element) {
-        int index = indexOf(element);
-        return index != -1;
+        return indexOf(element) != -1;
     }
 
     @Override
@@ -102,10 +96,10 @@ public class XArrayList <T> implements XList<T> {
 
     @Override
     public T get(int index) {
-        if(index > size || index < 0) {
+        if(index > size || index < 0 || size == 0) {
             throw new IndexOutOfBoundsException();
         }
-        return (T) array[index];
+        return array[index];
     }
 
     @Override
